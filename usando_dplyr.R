@@ -50,13 +50,24 @@ dados %>% filter(grepl("bee", name)|grepl("saur", name))
 
 
 #? A função pull devolve um vetor
+pull(dados,name)
 dados %>% pull(name)
 
+#AULA cascata de funções (vantagems: bem visual e melhor de escrever)
+dados %>% 
+  filter(type=="fire") %>% #? filtrou apenas fogo
+  pull(secundary.type) %>% #? extraiu os tipos secundarios
+  unique                   #? apenas valores unicos
+
 #? A função select seleciona colunas
-dados %>% select(c(1, 2, 3)) #? pelo número
-dados %>% select(name, type, height) #? pelo nome
+dados %>% select(c(1, 2, 3)) #? pelo número da coluna
+dados %>% select(name, type, height) #? pelo nome da coluna
+
+dados %>% select(type) %>% unique #? tipos unicos
+
 
 #TODO achar todas as combinações existentes de type e secondary.type
+dados %>% select(type,secundary.type) %>% unique
 
 #? Outras possibilidades
 dados %>% names
@@ -66,25 +77,32 @@ dados %>%
 dados %>% select(-name) %>% head #? negativo exclui as colunas
 
 #? A função mutate modifica ou cria uma coluna com base em outras
+mutate(dados,height2=2*height)
 
 dados %>% 
     mutate(
-        height2 = 2*height
-    )
+        height2 = 2*height, #? nome diferente add no final
+        speed = 2*speed, #? nome igual substitui coluna
+        bee = grepl("bee",name)
+    ) %>% head
 
 #? A função arrange organiza o data frame com base em colunas
 
 dados %>%
-    arrange(name) %>%
-        head()
+    arrange(name) %>% #? ascendente (A-Z)
+        head() #? começo
 
 dados %>%
     arrange(name) %>%
+        tail() #? final
+
+dados %>%
+    arrange(desc(name)) %>% #? descendente (Z-A)
         tail()
 
 dados %>%
-    arrange(desc(name)) %>%
-        tail()
+  arrange(type,height) %>%
+  head() 
 
 #? Vamos fazer algumas contas!!
 
@@ -104,10 +122,23 @@ dados %>%
         ) %>%
             arrange(media_altura)
 
-#TODO Filtrar os pokemons que tem o peso acima da média do seu type
 
-#TODO criar uma coluna com a transformação Z-score POR type utilizando TODAS
+#TODO Filtrar os pokemons que tem o peso acima da média da altura do seu type
+dados %>%
+  group_by(type) %>%                  #? agrupa por tipo
+  mutate(
+    media_altura = mean(height),      #? calcula a media do tipo
+    media_peso = mean(weight)
+  ) %>% 
+  filter(height > media_altura, weight > media_peso) %>%   #? filtra maiores que a media
+  select(-media_altura)              #? apaga coluna de media
+  
+# Lição 20/04
+#TODO criar uma coluna com a transformação Z-score para altura POR type utilizando TODAS
+
+
 #TODO as variáveis quantitativas
+
 
 #? Renomear colunas
 dados %>%
@@ -143,7 +174,7 @@ dados %>%
                 relocate("Número de pokemons", .after = type)
 
 
-#? rowwise
+#? rowwise: linha por linha
 
 #? A função mutate e outras do pacote dplyr trabalham diretamente com as colunas
 #? como se fossem operações de vetor
@@ -179,6 +210,12 @@ dados %>%
 
 #* O código abaixo funciona
 #TODO
+dados %>%
+  rowise() %>% 
+  mutate(
+    nova_var = f(height)
+  ) %>%
+  select(height, nova_var) %>% head(30)
 
 #? ifelse e case_when
 
