@@ -37,14 +37,16 @@ dados %>% nrow(.)
 filter(dados, type == "grass")
 
 #? podemos usar o seguinte comando também
-dados %>% filter(type == "grass")
+(df_grass <- dados %>% filter(type == "grass"))
 
 #TODO Vamos filtrar todos os pokemons do tipo fogo ou água
+(df_fire_water <- dados %>% filter(type == "fire" | type == "water"))
 
 #TODO Vamos filtrar todos os pokemons que tem  "fly"
+(df_fly <- dados %>% filter(grepl("fly", name)))
 
 #TODO Vamos filtrar todos os pokemons que tem  "bee" ou "saur"
-
+dados %>% filter(grepl("bee", name)|grepl("saur", name))
 
 
 #? A função pull devolve um vetor
