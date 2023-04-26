@@ -45,9 +45,10 @@ filter(dados, type == "grass")
 #TODO Vamos filtrar todos os pokemons que tem  "fly"
 (df_fly <- dados %>% filter(grepl("fly", name)))
 
+################### Lição 13/04 ########################
 #TODO Vamos filtrar todos os pokemons que tem  "bee" ou "saur"
 dados %>% filter(grepl("bee", name)|grepl("saur", name))
-
+#######################################################
 
 #? A função pull devolve um vetor
 pull(dados,name)
@@ -133,8 +134,15 @@ dados %>%
   filter(height > media_altura, weight > media_peso) %>%   #? filtra maiores que a media
   select(-media_altura)              #? apaga coluna de media
   
-# Lição 20/04
+################### Lição 20/04 ########################
 #TODO criar uma coluna com a transformação Z-score para altura POR type utilizando TODAS
+dados %>%
+  group_by(type) %>% 
+  mutate(
+    zscore_height = (height -mean(height))/sd(height)
+  ) %>% 
+  arrange(type)
+#######################################################
 
 
 #TODO as variáveis quantitativas
