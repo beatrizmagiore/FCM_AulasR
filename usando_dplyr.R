@@ -469,13 +469,23 @@ novo_grupo <- data.frame(
 df_means <- rbind(df_means, novo_grupo)
 
 #? left_join
-#TODO
 df <- left_join(dados, df_means, by = "type")
 View(df)
+
 df %>% 
   filter(type == "bug") %>%  head(15)
 df %>% tail()
 # CUIDADO: mais de uma correspondencia, faz todas as combinações possíveis
+
+################### Lição 18/05 (1) ########################
+#? right_join
+df2 <- right_join(dados, df_means, by = "type")
+View(df2)
+
+df2 %>% 
+  filter(type == "bug") %>%  head(15)
+df2 %>% tail()
+###########################################################
 
 #?#####################################################################
 #? TIDYR
@@ -503,13 +513,13 @@ df
 #? Pivoteamento
 
 #? pivot_longer - agrupa colunas
-
 df_long <- df %>%
   slice(1:10) %>% # 10 primeiros
   tidyr::pivot_longer(2:4, values_to = "Valor", names_to = "Tipo de Valor")
 
 View(df_long)
 
+# grafico
 ggplot()+
   geom_col(data = df_long, aes(x = titulo, y = Valor, fill = `Tipo de Valor`),
            position = position_dodge2()
@@ -519,15 +529,17 @@ ggplot()+
     axis.text.x = element_text(angle = 45, hjust = 1.0)
   )
 
-
 ## Pivot wider - separa coluna e várias
 df_long %>% 
   tidyr::pivot_wider(names_from = `Tipo de Valor`, values_from = Valor)
 
+################### Lição 18/05 (2) ########################
 # correlação cor()
 # Calcular correlação do conjunto inteiro entre as variáveis
 
 
+
+##########################################################
 
 #? Emissões de ar
 #? https://www.kaggle.com/datasets/ashishraut64/global-methane-emissions
