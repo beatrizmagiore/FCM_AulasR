@@ -537,8 +537,13 @@ df_long %>%
 # correlação cor()
 # Calcular correlação do conjunto inteiro entre as variáveis
 
+df <- dados %>% 
+  select_if(is.numeric) %>% 
+  na.omit()
+View(df)
 
-
+matriz_correlacao <- cor(df)
+View(matriz_correlacao)
 ##########################################################
 
 #? Emissões de ar
