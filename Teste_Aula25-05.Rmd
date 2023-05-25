@@ -2,10 +2,37 @@
 title: "Teste"
 author: "Beatriz Magiore"
 date: "2023-05-25"
-output: html_document
+output: 
+  html_document: 
+    df_print: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+source("function.R",encoding = "UTF-8")
 ```
+
+Texto texto texto...
+
+**Negrito** , *Itálico* , ~~Taxado~~
+
+$\alpha$, $\beta$
+
+\[\frac{dV}{dt} = \alpha t\]
+
+> explorar o pacote ['fontawesome'](https://fontawesome.com/icons) (exemplo: `r fontawesome::fa("triangle-exclamation", fill = "orange")` )
+
+ATALHO: ctrl+alt+i : criar R chunk
+
+Para utilizar funções de outro arquivo R: source("xxxxxxxx.R",encoding = "UTF-8") no preâmbulo
+
+Ex: O gráfico abaixo mostra a relação entre as duas variáveis
+
+```{r,echo=FALSE,fig.width=4.5,fig.height=4}
+plotar(c(1,2,3),c(2,4,6))
+```
+
+Obs.: 'include=FALSE' : não mostra nem o chunk, nem o output ; 'echo=FALSE' : mostra o output mas não o chunk ; 'fig.width'/'fig.height' : configura tamanho da imagem.
+
+
 
