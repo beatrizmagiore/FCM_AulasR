@@ -78,6 +78,10 @@ Note que o ggplot2 funciona em um esquema de "linha por linha". Ou seja, os dado
 ggplot()+
   geom_point(data = dados, aes(x = height, y = weight, color = type))+
   scale_color_viridis_d() #d -> quer dizer "discrete"
+
+ggplot()+
+  geom_point(data = dados, aes(x = height, y = weight, color = type))+
+  scale_color_brewer(palette = "Set1") 
 ```
 
 Ou até mesmo passando as cores que querem usar. Vamos criar a coluna tamnho, como antes, mudando um pouco os breaks
@@ -105,7 +109,9 @@ ggplot()+
 # notem que os breaks estão estranhos
 ggplot()+
   geom_point(data = dados, aes(x = height, y = weight, color = tamanho))+
-  scale_color_manual(values = c("blue", "red", "grey", "purple"), breaks = c("baixinho", "pequeno", "médio", "altão"), name = "Classe de tamanho")
+  scale_color_manual(values = c("blue", "red", "grey", "purple"), breaks = c("baixinho", "pequeno", "médio", "altão"), 
+                     label= c("Baixinho", "Pequeno", "Médio", "Altão"),
+                     name = "Classe de tamanho")
 
 ```
 

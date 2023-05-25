@@ -539,11 +539,14 @@ df_long %>%
 
 df <- dados %>% 
   select_if(is.numeric) %>% 
-  na.omit()
-View(df)
+  na.omit() %>% 
+  cor()
 
-matriz_correlacao <- cor(df)
-View(matriz_correlacao)
+# correção aula 25/05
+df2 <- dados %>% 
+  select_if(is.numeric) %>% 
+  filter(complete.cases(.)) %>% 
+  cor()
 ##########################################################
 
 #? Emissões de ar
