@@ -10,6 +10,8 @@ library(dplyr)
 #? E outras bibliotecas que serão úteis
 library(lubridate)
 library(stringr)
+library(ggplot2)
+
 
 #? Vamos começar com os dados de pokemon
 #? https://www.kaggle.com/datasets/igorcoelho24/pokemon-all-generations/versions/1?resource=download
@@ -401,7 +403,7 @@ novo_grupo <- data.frame(
 #TODO adicionar o grupo
 df_means <- rbind(df_means, novo_grupo)
 
-### BOA Prática
+### BOA Prática - eliminar espaços nas extremidades das strings
 
 dados <- dados %>% 
   mutate_if(is.character, function(x) trimws(x,"both"))
@@ -463,7 +465,6 @@ novo_grupo <- data.frame(
   media_w = 800
 )
 
-
 #TODO adicionar o grupo
 df_means <- rbind(df_means, novo_grupo)
 
@@ -474,10 +475,7 @@ View(df)
 df %>% 
   filter(type == "bug") %>%  head(15)
 df %>% tail()
-
-#? right_join
-#TODO
-
+# CUIDADO: mais de uma correspondencia, faz todas as combinações possíveis
 
 #?#####################################################################
 #? TIDYR
@@ -487,7 +485,7 @@ library(tidyr)
 
 #? baixado de https://livro.curso-r.com/
 
-dados <- readr::read_rds("R/Dados/imdb.rds")
+dados <- readr::read_rds("Dados/imdb.rds")
 View(dados)
 head(dados)
 names(dados)
@@ -496,50 +494,37 @@ df <- dados %>%
   select(titulo, orcamento, receita, receita_eua)
 df
 
-# um gráfico com 10 primeiros filmes
-# barras
+#TODO um gráfico de barras com 10 primeiros filmes
 # cada barra vem de uma coluna e aparece com uma cor diferente
+
 
 #TODO checar se cada filme tem apenas um genero associado
 
 #? Pivoteamento
 
-#? pivot_longer
+#? pivot_longer - agrupa colunas
 
 df_long <- df %>%
-  slice(1:10) %>% 
-  tidyr::pivot_longer(2:4, values_to = Valor, names_to = "Tipo de Valor")
-
-df %>%
-  slice(1:10) %>% 
+  slice(1:10) %>% # 10 primeiros
   tidyr::pivot_longer(2:4, values_to = "Valor", names_to = "Tipo de Valor")
 
-
-
-
-View(df %>% slice(1:10))
 View(df_long)
-
-# carregar
-library(ggplot2)
 
 ggplot()+
   geom_col(data = df_long, aes(x = titulo, y = Valor, fill = `Tipo de Valor`),
            position = position_dodge2()
-  )+
+           )+
   theme_bw()+
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1.0)
   )
 
 
-
-## Pivot wider
+## Pivot wider - separa coluna e várias
 df_long %>% 
   tidyr::pivot_wider(names_from = `Tipo de Valor`, values_from = Valor)
 
 # correlação cor()
-
 # Calcular correlação do conjunto inteiro entre as variáveis
 
 
