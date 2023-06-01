@@ -214,10 +214,32 @@ ggplot()+
   scale_x_continuous(limits = c(0, 250), expand = c(0,0), name = "Altura")+
   theme_clean()
 
+library(rcartocolor)
+
+cores <- carto_pal(3,name="Bold")
 
 ggplot()+
-  geom_density(data = dados, aes(x = height))
+  geom_density(data = dados, aes(x = height, color="Altura", linetype="Altura", fill="Altura"), alpha=0.5)+
+  geom_density(data = dados, aes(x = weight, color="Peso", linetype="Peso", fill="Peso"), alpha=0.5)+
+  scale_x_continuous(trans='log10')+
+  labs(x="Medida", y="Densidade", color="Tipo de medida", linetype="Tipo de medida", fill="Tipo de medida")+
+  scale_color_manual(values=cores[1:2])+
+  scale_fill_manual(values=cores[1:2])+
+  theme_bw()
 
+```
+
+```{r}
+dados %>% 
+  select(Peso = weight, Altura = height) %>% 
+  tidyr::pivot_longer(cols = c(1,2), values_to = "Medida", names_to = "Tipo de medida") %>% 
+  ggplot()+
+  geom_density(aes(x = Medida, color = `Tipo de medida`, linetype = `Tipo de medida`, fill = `Tipo de medida`), alpha = 0.5)+
+  scale_x_continuous(trans = 'log10')+
+  scale_color_manual(values = cores[1:2])+
+  scale_fill_manual(values = cores[1:2])+
+  labs(x = "Medida", y = "Densidade", color = "Tipo de medida", linetype = "Tipo de medida", fill = "Tipo de medida")+
+  theme_bw()
 ```
 
 ## Adicionando temas sobre temas
@@ -239,7 +261,7 @@ ggplot()+
   scale_x_continuous(trans = "log10", limits = c(1, 250), expand = c(0,0), name = "Altura")+
   theme_clean()+
   theme(
-    axis.title = element_text(size = 18, face = "bold"),
+    axis.title = element_text(size = 16, face = "bold"),
     axis.text = element_text(size = 14)
   )
 
@@ -287,7 +309,7 @@ dados %>%
 
 
 ```{r}
-
+# LIÇÃO 01/06
 
 df <- dados %>%
   group_by(type) %>% 
@@ -321,6 +343,7 @@ df %>%
     axis.title = element_text(size = 18, face = "bold"),
     axis.text = element_text(size = 14)
   )
+
 
 # TODO arrumar
 
