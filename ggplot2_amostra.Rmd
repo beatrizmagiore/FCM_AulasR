@@ -79,9 +79,11 @@ ggplot()+
   geom_point(data = dados, aes(x = height, y = weight, color = type))+
   scale_color_viridis_d() #d -> quer dizer "discrete"
 
+
 ggplot()+
   geom_point(data = dados, aes(x = height, y = weight, color = type))+
-  scale_color_brewer(palette = "Set1") 
+  scale_color_brewer(palette = "Set3") #d -> quer dizer "discrete"
+
 ```
 
 Ou até mesmo passando as cores que querem usar. Vamos criar a coluna tamnho, como antes, mudando um pouco os breaks
@@ -102,6 +104,16 @@ Criar o plot com cores em função de "tamanho"
 
 ```{r}
 
+dados <- dados %>% 
+  dplyr::mutate(
+    tamanho = dplyr::case_when(
+            height < 5 ~ "baixinho",
+            height < 50 ~ "pequeno",
+            height < 100 ~ "médio",
+            TRUE ~ "altão"
+        )
+  )
+
 ggplot()+
   geom_point(data = dados, aes(x = height, y = weight, color = tamanho))+
   scale_color_manual(values = c("blue", "red", "grey", "purple"))
@@ -109,9 +121,14 @@ ggplot()+
 # notem que os breaks estão estranhos
 ggplot()+
   geom_point(data = dados, aes(x = height, y = weight, color = tamanho))+
-  scale_color_manual(values = c("blue", "red", "grey", "purple"), breaks = c("baixinho", "pequeno", "médio", "altão"), 
-                     label= c("Baixinho", "Pequeno", "Médio", "Altão"),
-                     name = "Classe de tamanho")
+  scale_color_manual(values = c("blue", "red", "grey", "purple"), breaks = c("baixinho", "pequeno", "médio", "altão"), name = "Classe de tamanho")
+
+
+# notem que os breaks estão estranhos
+ggplot()+
+  geom_point(data = dados, aes(x = height, y = weight, color = tamanho))+
+  scale_color_manual(values = c("blue", "red", "grey", "purple"), breaks = c("baixinho", "pequeno", "médio", "altão"),
+                     label = c("Baixinho", "Pequeno", "Médio", "iuyhagsdiuhasiudh"), name = "Classe de tamanho -- o que eu quiser")
 
 ```
 
@@ -128,7 +145,7 @@ ggplot()+
 
 # estranho
 ggplot()+
-  geom_point(data = dados, aes(x = height, y = weight, color = tamanho, fill = tamanho), shape = 21)+
+  geom_point(data = dados, aes(x = height, y = weight, color = tamanho, fill = tamanho), shape = 22)+
   scale_color_manual(values = c("blue", "red", "grey", "purple"), breaks = c("baixinho", "pequeno", "médio", "altão"), name = "Classe de tamanho")
 
 
@@ -196,6 +213,10 @@ ggplot()+
   scale_y_continuous(limits = c(0, 12000), expand = c(0,0), name = "Peso")+
   scale_x_continuous(limits = c(0, 250), expand = c(0,0), name = "Altura")+
   theme_clean()
+
+
+ggplot()+
+  geom_density(data = dados, aes(x = height))
 
 ```
 
@@ -441,4 +462,6 @@ cores <- rcartocolor::carto_pal(12, "Bold")
 
 
 
+## Plots legais
 
+[Clique aqui](https://www.cedricscherer.com/2021/06/06/visualizing-distributions-with-raincloud-plots-and-how-to-create-them-with-ggplot2/)
